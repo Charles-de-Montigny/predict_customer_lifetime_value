@@ -1,0 +1,19 @@
+# Internal package
+-e .
+
+# External packages
+lifetimes
+pandas
+numpy
+sklearn
+click
+fire
+lightgbm
+plotly
+ipykernel
+nbformat
+fastparquet
+pydantic
+pandas-profiling
+shap
+fastapi
