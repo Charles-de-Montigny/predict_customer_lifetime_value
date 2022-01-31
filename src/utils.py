@@ -25,8 +25,9 @@ def days_between_purchases(
 
     Returns a pandas DataFrame with of the mean between purchase for every customers.
     """
-    if [col not in df.columns for col in [timestamp, user_id]]:
-        raise IndexError(f"{timestamp} or {user_id} is not a column in the dataframe.")
+    #print(df.head(1))
+    #if [col not in df.columns for col in [timestamp, user_id]]:
+    #    raise IndexError(f"{timestamp} or {user_id} is not a column in the dataframe.")
     df["date"] = pd.to_datetime(df[timestamp])
     # New df sorted first by id then by date
     df = df[[user_id, "date"]]
@@ -52,6 +53,30 @@ def days_between_purchases(
     data2 = data2.query("id0 == id1 and days_between_purchases > 1")
     # Return the mean
     return data2.groupby("id1")["days_between_purchases"].agg(["mean"])
+
+
+def tag_new_repeat(transac: pd.DataFrame,
+                   user_id: str='user_id',
+                   timestamp: str='timestamp',
+                   new_col_name: str='new'):
+    '''
+    Goes through a transactional dataframe and tag the line where a customer is
+    considered new
+
+    Args:
+        transac: the transactional dataframe
+        user_id: the name of the user id column in the dataframe
+        timestamp: the name of the timestamp column in the dataframe
+        new_col_name: name of the column containing if the client is new
+    Returns: A copy of the dataframe with a new column indicating the
+             transaction at wich the customer is considered new
+    '''
+    df = transac.copy(deep=True)
+    df = df.sort_values(by=timestamp)
+
+    df['cumcount'] = df.groupby(user_id).cumcount()
+    df[new_col_name] = df['cumcount'] == 0
+    return df
 
 
 def order_to_transac(
