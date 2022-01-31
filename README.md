@@ -12,9 +12,7 @@ MacOS & Linux:
 ```
 git clone https://github.com/Charles-de-Montigny/predict_customer_lifetime_value.git
 cd predict_customer_lifetime_value
-python3 -m virtualenv venv
-source venv/bin/activate
-pip install -r requirements.txt
+bash ./init.sh
 ```
 
 Getting Started
