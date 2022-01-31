@@ -4,6 +4,7 @@
 # External packages
 lifetimes
 pandas
+openpyxl
 numpy
 sklearn
 click
@@ -17,3 +18,4 @@ pydantic
 pandas-profiling
 shap
 fastapi
+black
