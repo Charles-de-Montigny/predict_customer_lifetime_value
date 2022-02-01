@@ -45,8 +45,9 @@ Profiling Reports
 There is a pandas profiling report available in the reports folder but if you want to run it yourself:
 
 ```
-python src/profiling.py --dataset train
-python src/profiling.py --dataset test
+python src/profiling.py trainset
+python src/profiling.py testset
+python src/profilint.py transac
 ```
 
 For more information about the pandas Profiling project:
