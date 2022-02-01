@@ -36,7 +36,7 @@ def run_eval(estimator: str, verbose: bool = True, project_path: str = "./"):
     # Load data
     data = load_clean_data(project_path=project_path)
     # Load model
-    model = Models().get(estimator)(discount_rate=0.3)
+    model = Models().get(estimator)(discount_rate=0.05, horizon=3)
     # Fit & Predict
     model.fit(transac=data["transac"], single_view=data["singleview"])
     prediction = model.predict(data["singleview"])
@@ -90,4 +90,4 @@ def run_eval(estimator: str, verbose: bool = True, project_path: str = "./"):
 
 
 if __name__ == "__main__":
-    Fire()
+    Fire(run_eval)

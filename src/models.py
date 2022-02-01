@@ -113,7 +113,7 @@ class MultiBuyer(BaseEstimator):
 
     def __init__(
         self,
-        horizon: int = 365,
+        horizon: int = 12,
         beta_penalizer: float = 0.0,
         gg_penalizer: float = 0.0,
         discount_rate: float = 0.01,
@@ -144,6 +144,7 @@ class MultiBuyer(BaseEstimator):
         self.gg_model.fit(
             frequency=self.repeat_customers["frequency"] - 1,
             monetary_value=self.repeat_customers["aov"],
+            time=self.horizon,
         )
         self.is_fitted = True
         return self
@@ -218,7 +219,7 @@ class Models:
     Model's object.
     """
 
-    statistical = ResidualLifetimeValue
+    probabilistic = ResidualLifetimeValue
 
     def get(self, estimator: str) -> BaseEstimator:
         """

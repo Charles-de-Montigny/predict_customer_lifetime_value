@@ -1,6 +1,7 @@
 """
 Utility functions for this project.
 """
+import joblib
 import json
 import re
 import os
@@ -25,9 +26,6 @@ def days_between_purchases(
 
     Returns a pandas DataFrame with of the mean between purchase for every customers.
     """
-    #print(df.head(1))
-    #if [col not in df.columns for col in [timestamp, user_id]]:
-    #    raise IndexError(f"{timestamp} or {user_id} is not a column in the dataframe.")
     df["date"] = pd.to_datetime(df[timestamp])
     # New df sorted first by id then by date
     df = df[[user_id, "date"]]
@@ -55,11 +53,13 @@ def days_between_purchases(
     return data2.groupby("id1")["days_between_purchases"].agg(["mean"])
 
 
-def tag_new_repeat(transac: pd.DataFrame,
-                   user_id: str='user_id',
-                   timestamp: str='timestamp',
-                   new_col_name: str='new'):
-    '''
+def tag_new_repeat(
+    transac: pd.DataFrame,
+    user_id: str = "user_id",
+    timestamp: str = "timestamp",
+    new_col_name: str = "new",
+):
+    """
     Goes through a transactional dataframe and tag the line where a customer is
     considered new
 
@@ -70,12 +70,12 @@ def tag_new_repeat(transac: pd.DataFrame,
         new_col_name: name of the column containing if the client is new
     Returns: A copy of the dataframe with a new column indicating the
              transaction at wich the customer is considered new
-    '''
+    """
     df = transac.copy(deep=True)
     df = df.sort_values(by=timestamp)
 
-    df['cumcount'] = df.groupby(user_id).cumcount()
-    df[new_col_name] = df['cumcount'] == 0
+    df["cumcount"] = df.groupby(user_id).cumcount()
+    df[new_col_name] = df["cumcount"] == 0
     return df
 
 
@@ -267,6 +267,24 @@ def write_dataset(
             json.dump(df, file)
     if verbose:
         print(f"Dataset has been save to: {output_path}")
+
+
+def write_trained_model(
+    model, model_name: str, project: str = None, model_path: Path = Path("models")
+) -> None:
+    """
+    Write trained model to a pickle file.
+    """
+    if isinstance(model_path, str):
+        model_path = Path(model_path)
+    today = dt.now().strftime("%Y-%m-%d")
+    if project:
+        model_project_path = model_path.joinpath(project)
+        Path.mkdir(model_project_path, exist_ok=True)
+        full_path = model_project_path.joinpath(f"{model_name}_{today}.pkl")
+    else:
+        full_path = model_path.joinpath(f"{model_name}_{today}.pkl")
+    joblib.dump(model, full_path)
 
 
 def clean_order(order: pd.DataFrame) -> pd.DataFrame:

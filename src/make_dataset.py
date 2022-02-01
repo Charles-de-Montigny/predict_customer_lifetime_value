@@ -36,7 +36,7 @@ def make_dataset(project_path: str = "./"):
     # Write datasets
     for dataset, name in zip(
         [single_view_train, single_view, transac, transac_train, order],
-        ["trainset", "testset", "transac", "transac_train", "order"],
+        ["trainset", "testset", "transac", "transactrain", "order"],
     ):
         write_dataset(
             dataset,
