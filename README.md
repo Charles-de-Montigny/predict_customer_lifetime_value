@@ -36,7 +36,7 @@ bash ./run_prediction.sh
 
 3- Retrieve the result file in data/processed/:
 ```
-data/output/clv_prediction_{MODEL}_{DATE}.csv
+data/output/prediction_{YYYY-MM-DD}.csv
 ```
 
 Profiling Reports
